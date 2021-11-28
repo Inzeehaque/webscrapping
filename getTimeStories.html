@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Latest Stories</title>
+</head>
+<body>
+    <p id="stories"></p>
+    <script>
+        var xhr = new XMLHttpRequest();
+        var storyArray = [];
+        xhr.open("GET","https://time.com/", true);
+        xhr.responseType = "document";
+
+        xhr.onload = function(){
+            if(xhr.readyState == 4 && xhr.status == 200){
+                var response = xhr.responseXML.querySelectorAll("body > div.homepage-wrapper > section.homepage-module.latest > ol");
+               for(let i=0;i<5;i++){
+                   let href = response[0].children[i].children[0].children[0].children[1].children[0].href;
+                   link = href.slice(16);
+                   link = "https://time.com".concat(link);
+                   var story = new Object();
+                   story.title = response[0].children[i].children[0].children[0].children[1].children[0].textContent;
+                   story.link = link;
+                   storyArray.push(JSON.stringify(story));
+               }
+               document.getElementById("stories").innerHTML = storyArray;
+            }
+        };
+        xhr.onerror = function(){
+            console.log(xhr.status, xhr.statusText);
+        }
+        xhr.send();
+    </script>
+</body>
+</html>

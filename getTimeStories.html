@@ -16,14 +16,16 @@
 
         xhr.onload = function(){
             if(xhr.readyState == 4 && xhr.status == 200){
-                var response = xhr.responseXML.querySelectorAll("body > div.homepage-wrapper > section.homepage-module.latest > ol");
+                var response = xhr.responseXML.querySelectorAll("body > main > section.homepage-section-v2.voices-ls > div.partial.latest-stories > ul");
                for(let i=0;i<5;i++){
-                   let href = response[0].children[i].children[0].children[0].children[1].children[0].href;
+                   let href = response[0].children[i].children[0].href;
                    link = href.slice(16);
                    link = "https://time.com".concat(link);
                    var story = new Object();
-                   story.title = response[0].children[i].children[0].children[0].children[1].children[0].textContent;
+                   story.title = response[0].children[i].children[0].textContent;
                    story.link = link;
+                   console.log(story.title);
+                   console.log(story.link);
                    storyArray.push(JSON.stringify(story));
                }
                document.getElementById("stories").innerHTML = storyArray;
